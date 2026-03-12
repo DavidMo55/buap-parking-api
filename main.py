@@ -224,6 +224,13 @@ async def consultar_disponibilidad(nivel: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/test-db")
-async def test_db():
-    res = supabase.table("vehiculos").select("*").limit(5).execute()
-    return res.data
+async def obtener_todos_los_vehiculos():
+    try:
+        res = supabase.table("vehiculos").select("*").execute()
+        
+        print(f"📊 Catálogo: Enviando {len(res.data)} vehículos al frontend")
+        
+        return res.data
+    except Exception as e:
+        print(f"❌ Error al consultar catálogo: {e}")
+        return []
